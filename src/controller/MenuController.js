@@ -68,15 +68,18 @@ class MenuController {
 
     // 3.2.2 해당 카테고리에서 메뉴 추천
     for (const [coach, except] of exceptsMenu) {
+      // 못 먹는 메뉴들을 미리 걸러냄
       const filteredMenu = categoryKeys.map((key) => {
         const menu = menuList.get(key).menu;
         const filtered = menu.filter((food) => !except.includes(food));
         return filtered;
       });
 
+      // 걸러낸 메뉴들의 인덱스로 배열을 만들고,
       const numbersMenu = filteredMenu.map((v) => v.map((_, i) => i));
+      // 해당 배열들을 섞어서 셔플하여
       const menuIndexByCategories = numbersMenu.map((n) => Random.shuffle(n)[0]);
-
+      // 메뉴 출력
       let resultMenu = '';
       menuIndexByCategories.forEach((menuIndex, index) => {
         resultMenu += ' | ' + filteredMenu[index][menuIndex];
