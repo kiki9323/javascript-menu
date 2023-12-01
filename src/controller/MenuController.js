@@ -1,6 +1,5 @@
 import { Console, Random } from '@woowacourse/mission-utils';
-
-import menuList from '../constants/menuList.js';
+import { menuCategoryList, menuList } from '../constants/menuList.js';
 
 class MenuController {
   constructor() {
@@ -13,14 +12,16 @@ class MenuController {
     // 1. 코치 이름 입력
     const inputCoaches = await this.inputCoaches();
 
-    // 2. 코치 이름 배열 개수만큼 루프 돌면서 못 먹는 메뉴 입력 (Map 생성)
+    // // 2. 코치 이름 배열 개수만큼 루프 돌면서 못 먹는 메뉴 입력 (Map 생성)
     await this.inputExceptsMenu(inputCoaches);
 
     Console.print(`\n메뉴 추천 결과입니다.`);
     Console.print(`[ 구분 | 월요일 | 화요일 | 수요일 | 목요일 | 금요일 ]`);
 
     // 3. 카테고리 별 음식 추천
-    this.recommendMenu(this.exceptsMenu);
+    this.recommendWeeklyMenu();
+
+    Console.print(`\n추천을 완료했습니다.`);
   }
 
   async inputCoaches() {
@@ -35,10 +36,15 @@ class MenuController {
     }
   }
 
-  generateCategoryKeys() {
-    // 3.1 카테고리를 정한다. (랜덤 숫자 중복 2개까지 허용하여 5개 생성 => menuList의 키로 사용)
+  recommendWeeklyMenu() {
+    const categoryKeys = this.generateCategoryKey();
+    this.resultCategory(categoryKeys);
+    this.resultMenu(categoryKeys);
+  }
+
+  generateCategoryKey() {
     const categoryKeys = [];
-    let count = {};
+    const count = {};
 
     while (categoryKeys.length < 5) {
       let randomKey = Random.pickNumberInRange(1, 5);
@@ -51,43 +57,41 @@ class MenuController {
     return categoryKeys;
   }
 
-  // 3. 카테고리 별 음식 메뉴 추천
-  recommendMenu(exceptsMenu) {
-    // 3.1 카테고리를 정한다. (랜덤 숫자 중복 2개까지 허용하여 5개 생성 => menuList의 키로 사용)
-    const categoryKeys = this.generateCategoryKeys(); // categoryKeys [ 1, 2, 3, 4, 3 ]
-
-    // 3.2 키값에 따라서 menuList에서 카테고리 정하고, 해당 카테고리에서 메뉴 추천
-    // 3.2.1 키값에 따라서 menuList에서 카테고리 정한다.
-    let categoriesMessage = '';
-    categoryKeys.forEach((key) => {
-      const category = menuList.get(key).category;
-      categoriesMessage += ' | ' + category;
+  resultCategory(categoryKeys) {
+    let message = '';
+    categoryKeys.forEach((i) => {
+      message += ' | ' + menuCategoryList.get(i);
     });
 
-    Console.print(`[ 카테고리${categoriesMessage} ]`);
+    Console.print(`[ 카테고리${message} ]`);
+  }
 
-    // 3.2.2 해당 카테고리에서 메뉴 추천
-    for (const [coach, except] of exceptsMenu) {
-      // 못 먹는 메뉴들을 미리 걸러냄
-      const filteredMenu = categoryKeys.map((key) => {
-        const menu = menuList.get(key).menu;
-        const filtered = menu.filter((food) => !except.includes(food));
-        return filtered;
-      });
+  recommendMenuByCategory(categoryKeys) {
+    const pickMenu = categoryKeys
+      .map((i) => {
+        const categoryName = menuCategoryList.get(i);
+        const categoryMenuList = menuList.get(categoryName);
 
-      // 걸러낸 메뉴들의 인덱스로 배열을 만들고,
-      const numbersMenu = filteredMenu.map((v) => v.map((_, i) => i));
-      // 해당 배열들을 섞어서 셔플하여
-      const menuIndexByCategories = numbersMenu.map((n) => Random.shuffle(n)[0]);
-      // 메뉴 출력
-      let resultMenu = '';
-      menuIndexByCategories.forEach((menuIndex, index) => {
-        resultMenu += ' | ' + filteredMenu[index][menuIndex];
-      });
+        let selectedMenuId;
+        let pickMenu;
+        do {
+          const menuIds = categoryMenuList.map((item) => item.id);
+          selectedMenuId = Random.shuffle(menuIds)[0];
+          pickMenu = categoryMenuList.filter((list) => list.id === selectedMenuId).map((item) => item.menu);
+        } while (this.exceptsMenu.has(pickMenu.join()));
 
-      Console.print(`[ ${coach}${resultMenu} ]`);
-    }
-    Console.print(`\n추천을 완료했습니다.`);
+        return pickMenu.join();
+      })
+      .join(' | ');
+
+    return pickMenu;
+  }
+
+  resultMenu(categoryKeys) {
+    this.exceptsMenu.forEach((_, name) => {
+      const pickMenu = this.recommendMenuByCategory(categoryKeys);
+      Console.print(`[ ${name} | ${pickMenu} ]`);
+    });
   }
 }
 export default MenuController;

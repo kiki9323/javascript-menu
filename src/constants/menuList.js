@@ -1,89 +1,80 @@
-const menuList = new Map([
-  [
-    1,
-    {
-      category: '일식',
-      menu: [
-        '규동',
-        '우동',
-        '미소시루',
-        '스시',
-        '가츠동',
-        '오니기리',
-        '하이라이스',
-        '라멘',
-        '오코노미야끼',
-      ],
-    },
-  ],
-  [
-    2,
-    {
-      category: '한식',
-      menu: [
-        '김밥',
-        '김치찌개',
-        '쌈밥',
-        '된장찌개',
-        '비빔밥',
-        '칼국수',
-        '불고기',
-        '떡볶이',
-        '제육볶음',
-      ],
-    },
-  ],
-  [
-    3,
-    {
-      category: '중식',
-      menu: [
-        '깐풍기',
-        '볶음면',
-        '동파육',
-        '짜장면',
-        '짬뽕',
-        '마파두부',
-        '탕수육',
-        '토마토 달걀볶음',
-        '고추잡채',
-      ],
-    },
-  ],
-  [
-    4,
-    {
-      category: '아시안',
-      menu: [
-        '팟타이',
-        '카오 팟',
-        '나시고렝',
-        '파인애플 볶음밥',
-        '쌀국수',
-        '똠얌꿍',
-        '반미',
-        '월남쌈',
-        '분짜',
-      ],
-    },
-  ],
-  [
-    5,
-    {
-      category: '양식',
-      menu: [
-        '라자냐',
-        '그라탱',
-        '뇨끼',
-        '끼슈',
-        '프렌치 토스트',
-        '바게트',
-        '스파게티',
-        '피자',
-        '파니니',
-      ],
-    },
-  ],
+export const menuCategoryList = new Map([
+  [1, '일식'],
+  [2, '한식'],
+  [3, '중식'],
+  [4, '아시안'],
+  [5, '양식'],
 ]);
 
-export default menuList;
+export const menuList = new Map([
+  [
+    '일식',
+    [
+      { id: 1, menu: '규동', category: '일식' },
+      { id: 2, menu: '우동', category: '일식' },
+      { id: 3, menu: '미소시루', category: '일식' },
+      { id: 4, menu: '스시', category: '일식' },
+      { id: 5, menu: '가츠동', category: '일식' },
+      { id: 6, menu: '오니기리', category: '일식' },
+      { id: 7, menu: '하이라이스', category: '일식' },
+      { id: 8, menu: '라멘', category: '일식' },
+      { id: 9, menu: '오코노미야끼', category: '일식' },
+    ],
+  ],
+  [
+    '한식',
+    [
+      { id: 1, menu: '김밥', category: '한식' },
+      { id: 2, menu: '김치찌개', category: '한식' },
+      { id: 3, menu: '쌈밥', category: '한식' },
+      { id: 4, menu: '된장찌개', category: '한식' },
+      { id: 5, menu: '비빔밥', category: '한식' },
+      { id: 6, menu: '칼국수', category: '한식' },
+      { id: 7, menu: '불고기', category: '한식' },
+      { id: 8, menu: '떡볶이', category: '한식' },
+      { id: 9, menu: '제육볶음', category: '한식' },
+    ],
+  ],
+  [
+    '중식',
+    [
+      { id: 1, menu: '깐풍기', category: '중식' },
+      { id: 2, menu: '볶음면', category: '중식' },
+      { id: 3, menu: '동파육', category: '중식' },
+      { id: 4, menu: '짜장면', category: '중식' },
+      { id: 5, menu: '짬뽕', category: '중식' },
+      { id: 6, menu: '마파두부', category: '중식' },
+      { id: 7, menu: '탕수육', category: '중식' },
+      { id: 8, menu: '토마토 달걀볶음', category: '중식' },
+      { id: 9, menu: '고추잡채', category: '중식' },
+    ],
+  ],
+  [
+    '아시안',
+    [
+      { id: 1, menu: '팟타이', category: '아시안' },
+      { id: 2, menu: '카오 팟', category: '아시안' },
+      { id: 3, menu: '나시고렝', category: '아시안' },
+      { id: 4, menu: '파인애플 볶음밥', category: '아시안' },
+      { id: 5, menu: '쌀국수', category: '아시안' },
+      { id: 6, menu: '똠얌꿍', category: '아시안' },
+      { id: 7, menu: '반미', category: '아시안' },
+      { id: 8, menu: '월남쌈', category: '아시안' },
+      { id: 9, menu: '분짜', category: '아시안' },
+    ],
+  ],
+  [
+    '양식',
+    [
+      { id: 1, menu: '라자냐', category: '양식' },
+      { id: 2, menu: '그라탱', category: '양식' },
+      { id: 3, menu: '뇨끼', category: '양식' },
+      { id: 4, menu: '끼슈', category: '양식' },
+      { id: 5, menu: '프렌치 토스트', category: '양식' },
+      { id: 6, menu: '바게트', category: '양식' },
+      { id: 7, menu: '스파게티', category: '양식' },
+      { id: 8, menu: '피자', category: '양식' },
+      { id: 9, menu: '파니니', category: '양식' },
+    ],
+  ],
+]);
