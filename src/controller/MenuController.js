@@ -78,13 +78,18 @@ class MenuController {
           const menuIds = categoryMenuList.map((item) => item.id);
           selectedMenuId = Random.shuffle(menuIds)[0];
           pickMenu = categoryMenuList.filter((list) => list.id === selectedMenuId).map((item) => item.menu);
-        } while (this.exceptsMenu.has(pickMenu.join()));
+        } while (this.isMenuExcluded(pickMenu.join()));
 
         return pickMenu.join();
       })
       .join(' | ');
 
     return pickMenu;
+  }
+
+  isMenuExcluded(menu) {
+    const excludedMenus = Array.from(this.exceptsMenu.values()).flat();
+    return excludedMenus.includes(menu);
   }
 
   resultMenu(categoryKeys) {
