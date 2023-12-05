@@ -1,4 +1,4 @@
-import MenuController from './Controller/MenuController.js';
+import MenuController from './controller/MenuController.js';
 
 class App {
   #menuController;

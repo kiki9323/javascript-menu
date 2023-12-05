@@ -67,24 +67,20 @@ class MenuController {
   }
 
   recommendMenuByCategory(categoryKeys) {
-    const pickMenu = categoryKeys
-      .map((i) => {
-        const categoryName = menuCategoryList.get(i);
-        const categoryMenuList = menuList.get(categoryName);
+    return categoryKeys.map((i) => {
+      const categoryName = menuCategoryList.get(i);
+      const categoryMenuList = menuList.get(categoryName);
 
-        let selectedMenuId;
-        let pickMenu;
-        do {
-          const menuIds = categoryMenuList.map((item) => item.id);
-          selectedMenuId = Random.shuffle(menuIds)[0];
-          pickMenu = categoryMenuList.filter((list) => list.id === selectedMenuId).map((item) => item.menu);
-        } while (this.isMenuExcluded(pickMenu.join()));
+      let selectedMenuId;
+      let pickMenu;
+      do {
+        const menuIds = categoryMenuList.map((item) => item.id);
+        selectedMenuId = Random.shuffle(menuIds)[0];
+        pickMenu = categoryMenuList[selectedMenuId - 1].menu;
+      } while (this.isMenuExcluded(pickMenu));
 
-        return pickMenu.join();
-      })
-      .join(' | ');
-
-    return pickMenu;
+      return pickMenu;
+    });
   }
 
   isMenuExcluded(menu) {
@@ -95,7 +91,11 @@ class MenuController {
   resultMenu(categoryKeys) {
     this.exceptsMenu.forEach((_, name) => {
       const pickMenu = this.recommendMenuByCategory(categoryKeys);
-      Console.print(`[ ${name} | ${pickMenu} ]`);
+      let message = '';
+      pickMenu.forEach((menu) => {
+        message += ' | ' + menu;
+      });
+      Console.print(`[ ${name}${message} ]`);
     });
   }
 }
