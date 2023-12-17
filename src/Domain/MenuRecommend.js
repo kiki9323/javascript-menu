@@ -1,50 +1,25 @@
 import { menuCategoryList, menuList } from '../Constants/menuList.js';
 
-import Coach from '../Domain/Coach.js';
-import MessageFormat from '../Lib/MessageFormat.js';
-import { Random } from '@woowacourse/mission-utils';
 import View from '../View/View.js';
+import { inputWithRetry } from '../Lib/utils.js';
 
-class MenuController {
+class MenuRecommend {
   constructor() {
-    this.coach = new Coach();
-    this.view = new View();
+    this.categoryKeys = [];
     this.dupMenuByCategory = new Map();
   }
 
-  async runMenu() {
-    this.view.printStartAlert();
-
-    await this.coach.addCoaches();
-    await this.coach.setExceptsMenu();
-
-    this.view.printResultAlert();
-    this.view.printResultWeekly();
-
-    this.recommendWeeklyMenu();
-
-    this.view.printEndAlert();
-  }
-
-  recommendWeeklyMenu() {
-    const categoryKeys = this.generateCategoryKey();
-    this.view.print(MessageFormat.categoryMessage(categoryKeys));
-    this.resultMenu(categoryKeys);
-  }
-
   generateCategoryKey() {
-    const categoryKeys = [];
     const count = {};
-
-    while (categoryKeys.length < 5) {
+    while (this.categoryKeys.length < 5) {
       let randomKey = Random.pickNumberInRange(1, 5);
       if (!count[randomKey]) count[randomKey] = 0;
       if (count[randomKey] < 2) {
         count[randomKey] += 1;
-        categoryKeys.push(randomKey);
+        this.categoryKeys.push(randomKey);
       }
     }
-    return categoryKeys;
+    return this.categoryKeys;
   }
 
   recommendMenuByCategory(categoryKeys) {
@@ -93,4 +68,5 @@ class MenuController {
     });
   }
 }
-export default MenuController;
+
+export default MenuRecommend;
